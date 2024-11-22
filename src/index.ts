@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import bodyParser from 'body-parser';
 import db from 'config/db';
@@ -11,7 +12,9 @@ const app = express();
 db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static('public'));
+app.use(cors());
 
 app.use(authRoute);
 
