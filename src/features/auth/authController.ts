@@ -23,17 +23,17 @@ export const signIn = async (req: Request, res: Response) => {
         }
 
         if (result) {
-          res.send('Sign in success!');
+          res.status(200).json({ code: 200, message: 'Sign in success!' });
           return;
         }
 
-        res.send('Incorrect Password');
+        res.status(400).json({ code: 400, message: 'Incorrect Password' });
       });
 
       return;
     }
 
-    res.send('User not found');
+    res.status(400).json({ code: 400, message: 'User not found' });
   } catch (err) {
     console.log(err);
   }
@@ -48,7 +48,7 @@ export const signUp = async (req: Request, res: Response) => {
     ]);
 
     if (result.rows.length > 0) {
-      res.send('Email already exist. Try signing in.');
+      res.status(400).json({ code: 400, message: 'Email already exist' });
       return;
     }
 
@@ -56,12 +56,12 @@ export const signUp = async (req: Request, res: Response) => {
       if (err) {
         console.error('Error hashing password:', err);
       } else {
-        console.log('Hashed Password:', hash);
         await db.query(
           'INSERT INTO users (email, name, password) VALUES ($1, $2, $3)',
           [email, name, hash]
         );
-        res.send('Register success');
+
+        res.status(200).json({ code: 200, message: 'Register success' });
       }
     });
   } catch (err) {
@@ -70,5 +70,5 @@ export const signUp = async (req: Request, res: Response) => {
 };
 
 export const signOut = async (req: Request, res: Response) => {
-  res.send('Silahkan Logout');
+  res.status(200).json({ code: 200, message: 'Logout success' });
 };
